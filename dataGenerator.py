@@ -1,25 +1,28 @@
 import tensorflow as tf
+from constants import *
 
-def dataGeneration(DATA_DIR, IMG_SIZE, BATCH_SIZE, DATA_SPLIT):
+def dataGeneration(data_dir, img_size, batch_size, data_split):
 
     # generate 20 batches with specific size
     # train dataset
     train_ds = tf.keras.utils.image_dataset_from_directory(
-        DATA_DIR,
-        validation_split=DATA_SPLIT,
+        data_dir,
+        validation_split=data_split,
         subset="training",
         shuffle=True,
-        batch_size=BATCH_SIZE,
-        image_size=IMG_SIZE
+        seed=123,
+        batch_size=batch_size,
+        image_size=img_size
     )
     # validation dataset
     val_ds = tf.keras.utils.image_dataset_from_directory(
-        DATA_DIR,
-        validation_split=DATA_SPLIT,
+        data_dir,
+        validation_split=data_split,
         subset="validation",
         shuffle=True,
-        batch_size=BATCH_SIZE,
-        image_size=IMG_SIZE
+        seed=123,
+        batch_size=batch_size,
+        image_size=img_size
     )
 
     # create test set from validation set
@@ -35,6 +38,15 @@ def dataGeneration(DATA_DIR, IMG_SIZE, BATCH_SIZE, DATA_SPLIT):
 
     return train_ds, val_ds, test_ds
 
-
+# test
 if __name__ == '__main__':
-    pass
+    train_ds, val_ds, test_ds = dataGeneration(
+        data_dir=DATA_DIR,
+        img_size=IMG_SIZE,
+        batch_size=BATCH_SIZE,
+        data_split=DATA_SPLIT
+    )
+
+    # print(len(train_ds))
+    # print(len(val_ds))
+    # print(len(test_ds))

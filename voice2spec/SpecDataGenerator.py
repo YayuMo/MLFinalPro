@@ -13,7 +13,7 @@ BASE_DIR = [
     'data/BVCGender_AgeData/one_sentence/one_sentence/',
     'data/BVCGender_AgeData/S_02_voice/S_02/multiple_sentences/'
 ]
-OUTPUT_DIR = 'dataset/BVCData/'
+OUTPUT_DIR = '../dataset/BVCData/'
 
 # convert wav file to Spectrogram
 def wav2Spectrogram(filepath, outpath, framelength, type):

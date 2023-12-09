@@ -28,14 +28,15 @@ def AlexNet(num_classses=1000):
     model.add(Dropout(0.5))
     model.add(Dense(4096, activation='relu'))
     model.add(Dropout(0.5))
+    # model.add(Dense(num_classses, activation='softmax'))
     model.add(Dense(num_classses, activation='softmax'))
 
     return model
 
 model = AlexNet(num_classses=1000)
-print(model)
+model.summary()
 # model.save_weights('alexnet_weights.h5')
-model.load_weights('alexnet_weights_pytorch.h5')
+model.load_weights('../weight/pretrain/alexnet_weights_pytorch.h5')
 for layer in model.layers:
     for weight in layer.weights:
         print(weight.name, weight.shape)
