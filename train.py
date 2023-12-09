@@ -145,6 +145,7 @@ def train(pre_train_model, epoch):
         loss += history_fine.history['loss']
         val_loss += history_fine.history['val_loss']
 
+        model.save('weight/vgg19/vgg19.h5')
         return acc, val_acc, loss, val_loss
     elif(pre_train_model == 'ResNet50'):
         # freezed training
@@ -183,6 +184,7 @@ def train(pre_train_model, epoch):
         loss += history_fine.history['loss']
         val_loss += history_fine.history['val_loss']
 
+        model.save('weight/resnet/resnet50.h5')
         return acc, val_acc, loss, val_loss
 
 if __name__ == '__main__':
