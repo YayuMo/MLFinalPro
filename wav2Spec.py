@@ -16,6 +16,7 @@ def wav2Spec(filepath, framelength):
     window = np.hamming(M=nfft)
 
     plt.specgram(y[0,:], NFFT=nfft, Fs=fs, window=window)
+    plt.savefig('data/testout/test_spectrogram.png')
     plt.ylabel('Frequency')
     plt.xlabel('Time(s)')
     plt.title('Spectrogram')

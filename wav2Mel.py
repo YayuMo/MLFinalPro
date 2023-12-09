@@ -21,6 +21,7 @@ def wav2Mel(filepath, framelength):
 
     # draw mel
     librosa.display.specshow(mel_spect, sr=fs, x_axis='time', y_axis='mel')
+    plt.savefig('data/testout/test_MEL.png')
     plt.ylabel('Mel Frequency')
     plt.xlabel('Time(s)')
     plt.title('Mel Spectrogram')
