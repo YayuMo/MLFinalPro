@@ -2,7 +2,7 @@ import random
 
 import matplotlib.pyplot as plt
 
-def plotAccandLoss(acc, val_acc, loss, val_loss, epoch):
+def plotAccandLoss(acc, val_acc, loss, val_loss, epoch, pretrained_model):
     plt.figure(figsize=(8, 8))
     plt.subplot(2, 1, 1)
     plt.plot(acc, label='Training Accuracy')
@@ -22,4 +22,5 @@ def plotAccandLoss(acc, val_acc, loss, val_loss, epoch):
     plt.legend(loc='upper right')
     plt.title('Training and Validation Loss')
     plt.xlabel('epoch')
+    plt.savefig(pretrained_model+'.png')
     plt.show()

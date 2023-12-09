@@ -5,6 +5,7 @@ from dataGenerator import dataGeneration
 from constants import *
 import tensorflow as tf
 from util import plotAccandLoss
+import h5py
 
 def train(pre_train_model, epoch):
     # set GPU
@@ -35,6 +36,7 @@ def train(pre_train_model, epoch):
             learning_rate=Learning_Rate,
             freeze=False
         )
+
         history = modelFreezed.fit(train_ds,
                                    epochs=int(epoch / 2),
                                    validation_data=val_ds)
@@ -63,6 +65,8 @@ def train(pre_train_model, epoch):
         # total loss
         loss += history_fine.history['loss']
         val_loss += history_fine.history['val_loss']
+
+        model.save('weight/mobilenetv2/mobilenetv2.h5')
 
         return acc, val_acc, loss, val_loss
     elif(pre_train_model == 'VGG16'):
@@ -95,6 +99,7 @@ def train(pre_train_model, epoch):
                                  epochs=epoch,
                                  initial_epoch=history.epoch[-1],
                                  validation_data=val_ds)
+        model.save('weight/vgg16/vgg16.h5')
         # total acc
         acc += history_fine.history['accuracy']
         val_acc += history_fine.history['val_accuracy']
@@ -180,9 +185,8 @@ def train(pre_train_model, epoch):
 
         return acc, val_acc, loss, val_loss
 
-
 if __name__ == '__main__':
-    acc1, val_acc1, loss1, val_loss1 = train('ResNet50', epoch=Epoch)
-    acc2, val_acc2, loss2, val_loss2 = train('VGG19', epoch=Epoch)
-    plotAccandLoss(acc1, val_acc1, loss1, val_loss1, epoch=Epoch)
-    plotAccandLoss(acc2, val_acc2, loss2, val_loss2, epoch=Epoch)
+    acc1, val_acc1, loss1, val_loss1 = train('MobileNetV2', epoch=Epoch)
+    acc2, val_acc2, loss2, val_loss2 = train('VGG16', epoch=Epoch)
+    plotAccandLoss(acc1, val_acc1, loss1, val_loss1, epoch=Epoch,pretrained_model='MobileNetV2')
+    plotAccandLoss(acc2, val_acc2, loss2, val_loss2, epoch=Epoch,pretrained_model='VGG16')
