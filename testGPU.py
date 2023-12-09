@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-import tensorrt as trt
+# import tensorrt as trt
 import tensorflow as tf
 
 print(tf.test.is_built_with_cuda())
