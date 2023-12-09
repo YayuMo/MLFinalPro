@@ -182,5 +182,7 @@ def train(pre_train_model, epoch):
 
 
 if __name__ == '__main__':
-    acc, val_acc, loss, val_loss = train('VGG', epoch=Epoch)
-    plotAccandLoss(acc, val_acc, loss, val_loss, epoch=Epoch)
+    acc1, val_acc1, loss1, val_loss1 = train('ResNet50', epoch=Epoch)
+    acc2, val_acc2, loss2, val_loss2 = train('VGG19', epoch=Epoch)
+    plotAccandLoss(acc1, val_acc1, loss1, val_loss1, epoch=Epoch)
+    plotAccandLoss(acc2, val_acc2, loss2, val_loss2, epoch=Epoch)
