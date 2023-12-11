@@ -1,6 +1,7 @@
 from model.MobileNetV2 import MobileNetV2
 from model.VGG import VGG16, VGG19
 from model.ResNet import ResNet50
+from model.AlexNet import alexPreModel
 from dataGenerator import dataGeneration
 from constants import *
 import tensorflow as tf
@@ -186,9 +187,50 @@ def train(pre_train_model, epoch):
 
         model.save('weight/resnet/resnet50.h5')
         return acc, val_acc, loss, val_loss
+    elif(pre_train_model == 'AlexNet'):
+        # freezed training
+        modelFreezed = alexPreModel(
+            image_size=IMG_SIZE,
+            train_ds=train_ds,
+            learning_rate=Learning_Rate,
+            freeze=False
+        )
+        history = modelFreezed.fit(train_ds,
+                                   epochs=int(epoch / 2),
+                                   validation_data=val_ds)
+        # accuracy
+        acc = history.history['accuracy']
+        val_acc = history.history['val_accuracy']
+        # loss
+        loss = history.history['loss']
+        val_loss = history.history['val_loss']
+
+        # Fine Tune
+        model = alexPreModel(
+            image_size=IMG_SIZE,
+            train_ds=train_ds,
+            learning_rate=Learning_Rate,
+            freeze=True
+        )
+
+        history_fine = model.fit(train_ds,
+                                 epochs=epoch,
+                                 initial_epoch=history.epoch[-1],
+                                 validation_data=val_ds)
+        # total acc
+        acc += history_fine.history['accuracy']
+        val_acc += history_fine.history['val_accuracy']
+        # total loss
+        loss += history_fine.history['loss']
+        val_loss += history_fine.history['val_loss']
+
+        model.save('weight/alexnet/alexnet.h5')
+        return acc, val_acc, loss, val_loss
 
 if __name__ == '__main__':
-    acc1, val_acc1, loss1, val_loss1 = train('MobileNetV2', epoch=Epoch)
-    acc2, val_acc2, loss2, val_loss2 = train('VGG16', epoch=Epoch)
-    plotAccandLoss(acc1, val_acc1, loss1, val_loss1, epoch=Epoch,pretrained_model='MobileNetV2')
-    plotAccandLoss(acc2, val_acc2, loss2, val_loss2, epoch=Epoch,pretrained_model='VGG16')
+    # acc1, val_acc1, loss1, val_loss1 = train('MobileNetV2', epoch=Epoch)
+    # acc2, val_acc2, loss2, val_loss2 = train('VGG16', epoch=Epoch)
+    # plotAccandLoss(acc1, val_acc1, loss1, val_loss1, epoch=Epoch,pretrained_model='MobileNetV2')
+    # plotAccandLoss(acc2, val_acc2, loss2, val_loss2, epoch=Epoch,pretrained_model='VGG16')
+    acc, val_acc, loss, vall_loss = train('AlexNet', epoch=Epoch)
+    plotAccandLoss(acc, val_acc, loss, vall_loss, epoch=Epoch, pretrained_model='AlexNet')
